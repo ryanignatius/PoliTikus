@@ -47,6 +47,21 @@ public class Tower : MonoBehaviour {
 	
 	}
 	
+	public static int GetMoneyIncome(int post){
+		if (post < 10) return 2;
+		if (post < 20) return 5;
+		if (post < 30) return 11;
+		if (post < 40) return 23;
+		return 28;
+	}
+	public static int GetFame(int post){
+		if (post < 10) return 0;
+		if (post < 20) return 1;
+		if (post < 30) return 2;
+		if (post < 40) return 3;
+		return 4;
+	}
+	
 	public static float GetPostX(int tow, int post){
 		return Tower.x[tow,post];
 	}

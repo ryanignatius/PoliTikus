@@ -25,5 +25,26 @@ public class CharEvent : ButtonEvent {
 		}
 		player.button_selectchar.SetActive(false);
 		player.button.SetActive(true);
+		DoExit();
+	}
+	
+	public override void DoEnter(){
+		if (player == null){
+			player = GameObject.Find ("PlayerController").GetComponent<PlayerController>();
+		}
+		if (spinner == null){
+			spinner = GameObject.Find ("Spinner");
+		}
+		spinner.transform.position = new Vector3(
+			player.chars[player.cur_player*7+(num-1)].transform.position.x,
+			player.chars[player.cur_player*7+(num-1)].transform.position.y,
+			-1
+		);
+		//spinner.SetActive(true);
+	}
+	
+	public override void DoExit(){
+		spinner.transform.position = new Vector3(10,0,-1);
+		//spinner.SetActive(false);
 	}
 }

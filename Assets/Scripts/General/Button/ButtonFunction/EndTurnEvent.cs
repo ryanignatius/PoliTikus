@@ -17,11 +17,6 @@ public class EndTurnEvent : ButtonEvent {
 		if (player == null){
 			player = GameObject.Find ("PlayerController").GetComponent<PlayerController>();
 		}
-		if (player.isAct){
-			player.main_player[player.cur_player].ap = 0;
-			player.main_player[player.cur_player].money += player.main_player[player.cur_player].money_income;
-			player.main_player[player.cur_player].cur_fame = player.main_player[player.cur_player].max_fame;
-		}
 		player.EndTurn();
 	}
 }

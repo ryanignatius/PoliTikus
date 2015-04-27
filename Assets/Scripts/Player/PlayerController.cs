@@ -18,9 +18,12 @@ public class PlayerController : MonoBehaviour
 	
 	public MainPlayer[] main_player;
 	public CharacterPlayer[] chars;
+	public GameObject spinner;
 	public GameObject button;
 	public GameObject button_selectchar;
+	public GameObject[] button_chars;
 	public GameObject button_selecttower;
+	public GameObject player_select;
 	public int action_type;
 	
 	private bool levelWasLoaded = false;
@@ -89,18 +92,25 @@ public class PlayerController : MonoBehaviour
 		}
 		for (int i=1; i<=7*max_player; i++){
 			chars[i-1] = GameObject.Find("penguin "+i).GetComponent<CharacterPlayer>();
-			chars[i-1].main_player = main_player[(i-1)/7];
 			if ((i-1)%7 >= 3){
 				chars[i-1].is_active = false;
 				chars[i-1].gameObject.SetActive(false);
 			} else chars[i-1].is_active = true;
 		}
+		button_chars = new GameObject[8];
+		for (int i=1; i<=7; i++){
+			button_chars[i-1] = GameObject.Find ("Char "+i);
+		}
 		button = GameObject.Find("Button");
 		if (!isAct) button.SetActive(false);
+		spinner = GameObject.Find("Spinner");
+		//spinner.SetActive(false);
 		button_selectchar = GameObject.Find("Button Select Char");
 		button_selectchar.SetActive(false);
 		button_selecttower = GameObject.Find("Button Select Tower");
 		button_selecttower.SetActive(false);
+		player_select = GameObject.Find("Player Select");
+		player_select.SetActive(false);
 		StartTurn(cur_player+1);
 	}
 	
@@ -134,11 +144,13 @@ public class PlayerController : MonoBehaviour
 			}
 		}
 		main_player[player_id-1].ap = 10;
+		for (int i=0; i<7; i++){
+			chars[cur_player*7+i].is_move = false;
+		}
 		RenderText();
 		Debug.Log("player id : "+player_id);
 		if (id == player_id){
 			isAct = true;
-			//main_player[id-1].ap = 10;
 			button.SetActive(true);
 		} else {
 			button.SetActive(false);
@@ -164,6 +176,21 @@ public class PlayerController : MonoBehaviour
 	
 	[RPC]
 	public void EndTurn2(){
+		main_player[cur_player].money_income = 0;
+		main_player[cur_player].max_fame = 1;
+		for (int i=0; i<7; i++){
+			if (chars[cur_player*7+i].is_active){
+				if (chars[cur_player*7+i].mv.player_tower == 0){
+					main_player[cur_player].max_fame += Tower.GetFame(chars[cur_player*7+i].mv.player_post);
+				}
+				if (chars[cur_player*7+i].mv.player_tower == 2){
+					main_player[cur_player].money_income += Tower.GetMoneyIncome(chars[cur_player*7+i].mv.player_post);
+				}
+			}
+		}
+		main_player[cur_player].ap = 0;
+		main_player[cur_player].money += main_player[cur_player].money_income;
+		main_player[cur_player].cur_fame = main_player[cur_player].max_fame;
 		cur_player++;
 		cur_player %= max_player;
 		if (id == 0){
@@ -201,14 +228,12 @@ public class PlayerController : MonoBehaviour
 		main_player[cur_player].num_char++;
 		main_player[cur_player].ap -= hire_ap;
 		main_player[cur_player].money -= hire_money;
+		if (tow == 3) main_player[cur_player].money_income += 2;
 		for (int i=1; i<=7; i++){
 			if (!chars[(cur_player)*7+i].is_active){
 				chars[(cur_player)*7+i].is_active = true;
 				chars[(cur_player)*7+i].gameObject.SetActive(true);
 				chars[(cur_player)*7+i].mv.player_tower = tow-1;
-				if (tow == 3){
-					main_player[cur_player].money_income += 2;
-				}
 				chars[(cur_player)*7+i].transform.position = 
 					new Vector3(
 						Tower.GetPostX(chars[(cur_player)*7+i].mv.player_tower,chars[(cur_player)*7+i].mv.player_post),

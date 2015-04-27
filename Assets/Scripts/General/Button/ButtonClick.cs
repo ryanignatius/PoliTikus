@@ -36,4 +36,12 @@ public class ButtonClick : MonoBehaviour {
 		pic.color = temp2;
 		eve.DoEvent();
 	}
+	
+	void OnMouseEnter(){
+		eve.DoEnter();
+	}
+	
+	void OnMouseExit(){
+		eve.DoExit();
+	}
 }

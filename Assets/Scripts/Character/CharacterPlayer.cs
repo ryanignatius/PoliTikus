@@ -4,9 +4,8 @@ using System.Collections;
 [RequireComponent(typeof(MovePlayer))]
 public class CharacterPlayer : MonoBehaviour {
 	
-	public MainPlayer main_player;
-	
 	public bool is_active;
+	public bool is_move;
 	
 	public MovePlayer mv;
 	
@@ -24,12 +23,8 @@ public class CharacterPlayer : MonoBehaviour {
 	}
 	
 	public void Move(){
+		is_move = true;
 		mv.Move(mv.player_tower,mv.player_post+speed);
-		/*
-		if (mv.player_tower == 2){
-			
-		}
-		*/
 	}
 	
 }

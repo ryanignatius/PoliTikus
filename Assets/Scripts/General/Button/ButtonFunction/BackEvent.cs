@@ -3,8 +3,8 @@ using System.Collections;
 
 public class BackEvent : ButtonEvent {
 
-	public string prev;
-
+	public int num;
+	
 	// Use this for initialization
 	void Start () {
 	
@@ -16,7 +16,15 @@ public class BackEvent : ButtonEvent {
 	}
 	
 	public override void DoEvent(){
-		Debug.Log ("back "+prev);
-		Application.LoadLevel(prev);
+		if (player == null){
+			player = GameObject.Find ("PlayerController").GetComponent<PlayerController>();
+		}
+		if (num == 1){
+			player.button_selectchar.SetActive(false);
+			player.button.SetActive(true);
+		} else if (num == 2){
+			player.button_selecttower.SetActive(false);
+			player.button.SetActive(true);
+		}
 	}
 }
