@@ -47,6 +47,10 @@ public class Tower : MonoBehaviour {
 	
 	}
 	
+	public static bool GetChanceCard(int post){
+		if (post % 10 >= 5) return true;
+		return false;
+	}
 	public static int GetMoneyIncome(int post){
 		if (post < 10) return 2;
 		if (post < 20) return 5;

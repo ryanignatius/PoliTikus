@@ -25,6 +25,9 @@ public class BackEvent : ButtonEvent {
 		} else if (num == 2){
 			player.button_selecttower.SetActive(false);
 			player.button.SetActive(true);
+		} else if (num == 3){
+			player.skills.SetActive(false);
+			player.button.SetActive(true);
 		}
 	}
 }

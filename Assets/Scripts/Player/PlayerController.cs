@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
 	public GameObject[] button_chars;
 	public GameObject button_selecttower;
 	public GameObject player_select;
+	public GameObject skills;
 	public int action_type;
 	
 	private bool levelWasLoaded = false;
@@ -105,6 +106,8 @@ public class PlayerController : MonoBehaviour
 		if (!isAct) button.SetActive(false);
 		spinner = GameObject.Find("Spinner");
 		//spinner.SetActive(false);
+		skills = GameObject.Find("Skills");
+		skills.SetActive(false);
 		button_selectchar = GameObject.Find("Button Select Char");
 		button_selectchar.SetActive(false);
 		button_selecttower = GameObject.Find("Button Select Tower");
@@ -178,15 +181,22 @@ public class PlayerController : MonoBehaviour
 	public void EndTurn2(){
 		main_player[cur_player].money_income = 0;
 		main_player[cur_player].max_fame = 1;
+		bool is_chance = false;
 		for (int i=0; i<7; i++){
 			if (chars[cur_player*7+i].is_active){
 				if (chars[cur_player*7+i].mv.player_tower == 0){
 					main_player[cur_player].max_fame += Tower.GetFame(chars[cur_player*7+i].mv.player_post);
 				}
+				if (chars[cur_player*7+i].mv.player_tower == 1){
+					is_chance = is_chance || Tower.GetChanceCard(chars[cur_player*7+i].mv.player_post);
+				}
 				if (chars[cur_player*7+i].mv.player_tower == 2){
 					main_player[cur_player].money_income += Tower.GetMoneyIncome(chars[cur_player*7+i].mv.player_post);
 				}
 			}
+		}
+		if (is_chance){
+			// todo chance card effect
 		}
 		main_player[cur_player].ap = 0;
 		main_player[cur_player].money += main_player[cur_player].money_income;
