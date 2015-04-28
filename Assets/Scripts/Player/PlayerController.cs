@@ -225,6 +225,7 @@ public class PlayerController : MonoBehaviour
 	
 	[RPC]
 	public void InitMoveCharacter(int target){
+		action_type = 0;
 		main_player[target/7].ap -= move_ap;
 		chars[target].Move ();
 	}
@@ -236,6 +237,7 @@ public class PlayerController : MonoBehaviour
 	[RPC]
 	public void InitHireCharacter(int tow){
 	Debug.Log ("hire new at tower : "+tow);
+		action_type = 0;
 		main_player[cur_player].num_char++;
 		main_player[cur_player].ap -= hire_ap;
 		main_player[cur_player].money -= hire_money;
