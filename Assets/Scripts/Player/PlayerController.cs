@@ -23,9 +23,9 @@ public class PlayerController : MonoBehaviour
 	public GameObject button_selectchar;
 	public GameObject[] button_chars;
 	public GameObject button_selecttower;
-	public GameObject player_select;
+	public PlayerSelect player_select;
 	public GameObject skills;
-	public int action_type;
+	public int action_type = 0;
 	
 	private bool levelWasLoaded = false;
 	private void OnLevelWasLoaded(int iLevel)
@@ -112,8 +112,9 @@ public class PlayerController : MonoBehaviour
 		button_selectchar.SetActive(false);
 		button_selecttower = GameObject.Find("Button Select Tower");
 		button_selecttower.SetActive(false);
-		player_select = GameObject.Find("Player Select");
-		player_select.SetActive(false);
+		player_select = GameObject.Find("Player Select").GetComponent<PlayerSelect>();
+		player_select.max_id = max_player;
+		player_select.gameObject.SetActive(false);
 		StartTurn(cur_player+1);
 	}
 	
@@ -218,14 +219,14 @@ public class PlayerController : MonoBehaviour
 		Application.LoadLevel("MainMenu");
 	}
 	
-	public void MoveCharacter(int id){
-		netView.RPC("InitMoveCharacter",RPCMode.All,id);
+	public void MoveCharacter(int target){
+		netView.RPC("InitMoveCharacter",RPCMode.All,target);
 	}
 	
 	[RPC]
-	public void InitMoveCharacter(int id){
-		main_player[id/7].ap -= move_ap;
-		chars[id].Move ();
+	public void InitMoveCharacter(int target){
+		main_player[target/7].ap -= move_ap;
+		chars[target].Move ();
 	}
 	
 	public void HireCharacter(int tow){
@@ -252,5 +253,25 @@ public class PlayerController : MonoBehaviour
 				break;
 			}
 		}
+	}
+	
+	public void UseSkill(int target){
+		netView.RPC("InitUseSkill",RPCMode.All,target,action_type);
+	}
+	
+	[RPC]
+	public void InitUseSkill(int target, int act){
+		act = act-10;
+		int skill_id = act/3;
+		int skill_level = (act%3)+1;
+		
+		main_player[cur_player].ap -= Skill.ap_req[skill_id];
+		main_player[cur_player].money -= Skill.money_req[skill_id,skill_level];
+		main_player[cur_player].cur_fame -= Skill.fame_req[skill_id,skill_level];
+		
+		if (skill_id == 0) chars[target].Kampanye(skill_level);
+		else if (skill_id == 1) chars[target].Sabotase(skill_level);
+		else if (skill_id == 2) chars[target].Gosip(skill_level);
+		else if (skill_id == 3) chars[target].Peras(skill_level);
 	}
 }

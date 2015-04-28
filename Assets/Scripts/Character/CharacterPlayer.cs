@@ -27,4 +27,16 @@ public class CharacterPlayer : MonoBehaviour {
 		mv.Move(mv.player_tower,mv.player_post+speed);
 	}
 	
+	public void Kampanye(int level){
+		mv.Move(mv.player_tower,mv.player_post+level*3);
+	}
+	public void Sabotase(int level){
+		
+	}
+	public void Gosip(int level){
+		
+	}
+	public void Peras(int level){
+		
+	}
 }

@@ -19,12 +19,18 @@ public class CharEvent : ButtonEvent {
 		if (player == null){
 			player = GameObject.Find ("PlayerController").GetComponent<PlayerController>();
 		}
-		if (player.action_type == 1){
-			player.MoveCharacter((player.cur_player)*7+(num-1));
+		if (player.action_type == 1){ // move
+			player.MoveCharacter(player.cur_player*7+(num-1));
+			player.RenderText();
+		} else if (player.action_type >= 10) { // skill
+			player.UseSkill(player.player_select.id*7+(num-1));
 			player.RenderText();
 		}
 		player.button_selectchar.SetActive(false);
 		player.button.SetActive(true);
+		if (player.action_type >= 10){ // skill
+			player.player_select.gameObject.SetActive(false);
+		}
 		DoExit();
 	}
 	
@@ -35,11 +41,19 @@ public class CharEvent : ButtonEvent {
 		if (spinner == null){
 			spinner = GameObject.Find ("Spinner");
 		}
-		spinner.transform.position = new Vector3(
-			player.chars[player.cur_player*7+(num-1)].transform.position.x,
-			player.chars[player.cur_player*7+(num-1)].transform.position.y,
-			-1
-		);
+		if (player.action_type >= 10){ // skill
+			spinner.transform.position = new Vector3(
+				player.chars[player.player_select.id*7+(num-1)].transform.position.x,
+				player.chars[player.player_select.id*7+(num-1)].transform.position.y,
+				-1
+				);
+		} else {
+			spinner.transform.position = new Vector3(
+				player.chars[player.cur_player*7+(num-1)].transform.position.x,
+				player.chars[player.cur_player*7+(num-1)].transform.position.y,
+				-1
+			);
+		}
 		//spinner.SetActive(true);
 	}
 	

@@ -29,5 +29,9 @@ public class BackEvent : ButtonEvent {
 			player.skills.SetActive(false);
 			player.button.SetActive(true);
 		}
+		
+		if (player.action_type >= 10){ // skill
+			player.player_select.gameObject.SetActive(false);
+		}
 	}
 }

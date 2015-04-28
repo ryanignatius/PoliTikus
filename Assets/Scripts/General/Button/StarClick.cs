@@ -7,7 +7,6 @@ using System.Collections;
 public class StarClick : MonoBehaviour {
 	
 	private SpriteRenderer pic;
-	private ButtonEvent eve;
 	
 	public Sprite[] star_pic;
 	public int cur;
@@ -16,7 +15,6 @@ public class StarClick : MonoBehaviour {
 	void Start () {
 		cur = 0;
 		pic = GetComponent<SpriteRenderer>();
-		eve = GetComponent<ButtonEvent>();
 	}
 	
 	// Update is called once per frame
@@ -26,6 +24,11 @@ public class StarClick : MonoBehaviour {
 	
 	void OnMouseDown(){
 		cur = 1-cur;
+		pic.sprite = star_pic[cur];
+	}
+	
+	public void ResetStar(){
+		cur = 0;
 		pic.sprite = star_pic[cur];
 	}
 }
