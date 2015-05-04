@@ -198,6 +198,13 @@ public class PlayerController : MonoBehaviour
 		}
 		if (is_chance){
 			// todo chance card effect
+			if (id == 0){
+				// server
+				int card_no = Random.Range(0,ChanceCard.total_cards);
+				int card = ChanceCard.index[card_no];
+				Debug.Log ("Draw : "+ChanceCard.cards_list[card]);
+				DrawCard(card);
+			}
 		}
 		main_player[cur_player].ap = 0;
 		main_player[cur_player].money += main_player[cur_player].money_income;
@@ -208,6 +215,15 @@ public class PlayerController : MonoBehaviour
 			// server
 			StartTurn(cur_player+1);
 		}
+	}
+	
+	public void DrawCard(int card){
+		netView.RPC("DrawCard2", RPCMode.All, card);
+	}
+	
+	[RPC]
+	public void DrawCard2(int card){
+		// do effect card
 	}
 	
 	public void AbortGame(){
