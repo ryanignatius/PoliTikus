@@ -5,10 +5,13 @@ public class MainPlayer : MonoBehaviour {
 
 	public int id;
 	public int ap;
+	public int ap_gain;
 	public int money;
 	public int money_income;
 	public int cur_fame;
 	public int max_fame;
+	public int num_tools;
+	public int[] tools;
 	
 	public int num_char;
 	
@@ -18,11 +21,14 @@ public class MainPlayer : MonoBehaviour {
 	void Start () {
 		// initial status
 		ap = 0;
+		ap_gain = 10;
 		money = 20;
 		money_income = 2;
 		cur_fame = 1;
 		max_fame = 1;
 		num_char = 3;
+		num_tools = 0;
+		tools = new int[2];
 	}
 	
 	// Update is called once per frame

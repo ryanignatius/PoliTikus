@@ -3,6 +3,8 @@ using System.Collections;
 
 public class ChanceCard : MonoBehaviour {
 
+	public static Card cards;
+	
 	public static string[] tools_name = {
 		"Percobaan Pembunuhan",
 		"Transfer Departemen",
@@ -73,34 +75,45 @@ public class ChanceCard : MonoBehaviour {
 	};
 	
 	public static int total_cards;
+	public static int[] card_id;
 	public static string[] cards_list;
 	public static int[] index;
 	
 	// Use this for initialization
 	void Start () {
+		ChanceCard.card_id = new int[50];
+		ChanceCard.cards_list = new string[50];
+		ChanceCard.index = new int[50];
 		int a = 0;
-		total_cards = 0;
-		for (int i=0; i<tools_name.Length; i++){
-			cards_list[a] = tools_name[i];
-			total_cards += tools_number[i];
-			a++;
+		ChanceCard.total_cards = 0;
+		for (int i=0; i<ChanceCard.tools_name.Length; i++){
+			for (int j=0; j<ChanceCard.tools_number[i]; j++){
+				ChanceCard.card_id[a] = i;
+				ChanceCard.cards_list[a] = ChanceCard.tools_name[i];
+				ChanceCard.total_cards++;
+				a++;
+			}
 		}
-		for (int i=0; i<events_name.Length; i++){
-			cards_list[a] = events_name[i];
-			total_cards += events_number[i];
-			a++;
+		for (int i=0; i<ChanceCard.events_name.Length; i++){
+			for (int j=0; j<ChanceCard.events_number[i]; j++){
+				ChanceCard.card_id[a] = i+ChanceCard.tools_name.Length;
+				ChanceCard.cards_list[a] = ChanceCard.events_name[i];
+				ChanceCard.total_cards++;
+				a++;
+			}
 		}
 		bool[] used = new bool[total_cards];
-		for (int i=0; i<total_cards; i++){
+		for (int i=0; i<ChanceCard.total_cards; i++){
 			used[i] = false;
 		}
-		for (int i=0; i<total_cards; i++){
+		for (int i=0; i<ChanceCard.total_cards; i++){
 			do {
 				a = Random.Range(0,total_cards);
 			} while (used[a]);
 			used[a] = true;
-			index[i] = a;
+			ChanceCard.index[i] = a;
 		}
+		ChanceCard.cards = new Card();
 	}
 	
 	// Update is called once per frame

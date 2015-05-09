@@ -33,6 +33,17 @@ public class MovePlayer : MonoBehaviour {
 			Invoke("MoveAnim",(i*move_time));
 		}
 	}
+	public void Move2(int tow, int post){
+		int cur = Tower.GetMovePost(player_tower, player_post, tow, post);
+		int dif = player_post-cur;
+		
+		Debug.Log (cur+" "+ dif);
+		//player_tower = tow;
+		//player_post = post;
+		for (int i=0; i<dif; i++){
+			Invoke("MoveAnim2",(i*move_time));
+		}
+	}
 	
 	public void MoveAnim(){
 		float dir = Tower.GetDir(player_tower,player_post);
@@ -46,6 +57,19 @@ public class MovePlayer : MonoBehaviour {
 		);
 		StartCoroutine(WaitAndMove(vec));
 		player_post++;
+	}
+	public void MoveAnim2(){
+		float dir = -Tower.GetDir(player_tower,player_post);
+		float dx = Tower.GetDistX2(player_tower,player_post);
+		float dy = Tower.GetDistY2(player_tower,player_post);
+		dx *= dir;
+		Vector3 vec = new Vector3(
+			this.transform.position.x + dx,
+			this.transform.position.y + dy,
+			this.transform.position.z
+			);
+		StartCoroutine(WaitAndMove(vec));
+		player_post--;
 	}
 	
 	IEnumerator WaitAndMove(Vector3 dest){

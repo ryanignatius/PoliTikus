@@ -147,7 +147,8 @@ public class PlayerController : MonoBehaviour
 				netView.RPC("StartTurn", RPCMode.Others, player_id);
 			}
 		}
-		main_player[player_id-1].ap = 10;
+		main_player[player_id-1].ap = main_player[player_id-1].ap_gain;
+		main_player[player_id-1].ap_gain = 10;
 		for (int i=0; i<7; i++){
 			chars[cur_player*7+i].is_move = false;
 		}
@@ -200,10 +201,11 @@ public class PlayerController : MonoBehaviour
 			// todo chance card effect
 			if (id == 0){
 				// server
-				int card_no = Random.Range(0,ChanceCard.total_cards);
-				int card = ChanceCard.index[card_no];
-				Debug.Log ("Draw : "+ChanceCard.cards_list[card]);
-				DrawCard(card);
+				int card = Random.Range(0,ChanceCard.total_cards);
+				Debug.Log ("Draw card : "+card);
+				//int card = ChanceCard.index[card_no];
+				//Debug.Log ("Draw : "+ChanceCard.cards_list[card]);
+				DrawCard(ChanceCard.card_id[card]);
 			}
 		}
 		main_player[cur_player].ap = 0;
@@ -224,6 +226,7 @@ public class PlayerController : MonoBehaviour
 	[RPC]
 	public void DrawCard2(int card){
 		// do effect card
+		ChanceCard.cards.DrawCard(card);
 	}
 	
 	public void AbortGame(){
