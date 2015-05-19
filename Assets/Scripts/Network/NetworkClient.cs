@@ -36,13 +36,20 @@ public class NetworkClient : MonoBehaviour {
 		
 	}
 	
-	private void JoinServer(HostData hostData)
+	public void JoinServer()
+	{
+		//if (isProxy) Network.useProxy = true;
+		Network.Connect(hostList[0]);
+	}
+	
+	public void JoinServer(HostData hostData)
 	{
 		//if (isProxy) Network.useProxy = true;
 		Network.Connect(hostData);
 	}
 	
 	void OnGUI(){
+		/*
 		if (!Network.isClient && !Network.isServer)
 		{
 			if (GUI.Button(new Rect(100, 100, 250, 100), "Refresh Hosts"))
@@ -57,6 +64,7 @@ public class NetworkClient : MonoBehaviour {
 				}
 			}
 		}
+		*/
 	}
 	
 	void OnConnectedToServer() {
@@ -68,7 +76,7 @@ public class NetworkClient : MonoBehaviour {
 		player.AbortGame();
 	}
 	
-	private void RefreshHostList()
+	public void RefreshHostList()
 	{
 		MasterServer.RequestHostList(typeName);
 	}

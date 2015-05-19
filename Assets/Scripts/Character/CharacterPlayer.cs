@@ -44,7 +44,11 @@ public class CharacterPlayer : MonoBehaviour {
 		if (player == null){
 			player = GameObject.Find ("PlayerController").GetComponent<PlayerController>();
 		}
+		Debug.Log ("before : "+player.main_player[(mv.player_id-1)/7].money);
 		player.main_player[(mv.player_id-1)/7].money -= level*5;
+		Debug.Log ("after : "+player.main_player[(mv.player_id-1)/7].money);
+		Debug.Log ("before2 : "+player.main_player[player.cur_player].money);
 		player.main_player[player.cur_player].money += level*5;
+		Debug.Log ("after2 : "+player.main_player[player.cur_player].money);
 	}
 }

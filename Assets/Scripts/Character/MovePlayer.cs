@@ -49,6 +49,9 @@ public class MovePlayer : MonoBehaviour {
 		float dir = Tower.GetDir(player_tower,player_post);
 		float dx = Tower.GetDistX(player_tower,player_post);
 		float dy = Tower.GetDistY(player_tower,player_post);
+		if (dy >= 0.01f){
+			transform.Rotate(0,180,0);
+		}
 		dx *= dir;
 		Vector3 vec = new Vector3(
 			this.transform.position.x + dx,
@@ -62,6 +65,9 @@ public class MovePlayer : MonoBehaviour {
 		float dir = -Tower.GetDir(player_tower,player_post);
 		float dx = Tower.GetDistX2(player_tower,player_post);
 		float dy = Tower.GetDistY2(player_tower,player_post);
+		if (dy >= 0.01f){
+			transform.Rotate(0,180,0);
+		}
 		dx *= dir;
 		Vector3 vec = new Vector3(
 			this.transform.position.x + dx,

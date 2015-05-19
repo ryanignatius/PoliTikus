@@ -115,6 +115,11 @@ public class PlayerController : MonoBehaviour
 		player_select = GameObject.Find("Player Select").GetComponent<PlayerSelect>();
 		player_select.max_id = max_player;
 		player_select.gameObject.SetActive(false);
+		for (int i=1; i<=4; i++){
+			if (id == i) continue;
+			GameObject.Find ("B"+i).SetActive(false);
+			GameObject.Find ("F"+i).SetActive(false);
+		}
 		StartTurn(cur_player+1);
 	}
 	
@@ -143,22 +148,23 @@ public class PlayerController : MonoBehaviour
 	public void StartTurn(int player_id){
 		
 		if (id == 0){
-			for (int i=0; i<max_player; i++){
-				netView.RPC("StartTurn", RPCMode.Others, player_id);
-			}
-		}
-		main_player[player_id-1].ap = main_player[player_id-1].ap_gain;
-		main_player[player_id-1].ap_gain = 10;
-		for (int i=0; i<7; i++){
-			chars[cur_player*7+i].is_move = false;
-		}
-		RenderText();
-		Debug.Log("player id : "+player_id);
-		if (id == player_id){
-			isAct = true;
-			button.SetActive(true);
+			netView.RPC("StartTurn", RPCMode.Others, player_id);
 		} else {
-			button.SetActive(false);
+			Debug.Log ("Get : "+main_player[player_id-1].ap_gain+" AP");
+			main_player[player_id-1].ap = 0;
+			main_player[player_id-1].ap = main_player[player_id-1].ap_gain;
+			main_player[player_id-1].ap_gain = 10;
+			for (int i=0; i<7; i++){
+				chars[cur_player*7+i].is_move = false;
+			}
+			RenderText();
+			Debug.Log("player id : "+player_id);
+			if (id == player_id){
+				isAct = true;
+				button.SetActive(true);
+			} else {
+				button.SetActive(false);
+			}
 		}
 	}
 	
